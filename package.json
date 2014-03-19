@@ -1,0 +1,18 @@
+{
+  "name": "ninya-sync-api",
+  "version": "0.1.0",
+  "description": "The sync API for ninya.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "q": "~1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
+  }
+}

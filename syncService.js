@@ -1,0 +1,3 @@
+var SyncService = function () {
+
+};
