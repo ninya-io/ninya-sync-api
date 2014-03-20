@@ -1,14 +1,14 @@
-var SyncInfoRepositoryMock = require('../mocks/syncInfoRepositoryMock.js');
+var GenericRepositoryMock = require('../mocks/genericRepositoryMock.js');
 var chai = require('chai');
 var assert = chai.assert;
 
-describe('syncInfoRepositoryMock', function () {
+describe('genericRepositoryMock', function () {
 
-    var repository = new SyncInfoRepositoryMock();
+    var repository = new GenericRepositoryMock();
 
     describe('add', function () {
         it('should add and get the entity', function (done) {
-            repository.add({
+            repository.add(1, {
                 id: 1
             })
             .then(function (entity) {
@@ -22,7 +22,4 @@ describe('syncInfoRepositoryMock', function () {
             });
         });
     });
-
-
-
 });

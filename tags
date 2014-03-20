@@ -1,0 +1,89 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ElasticSearchRepository	elasticSearchRepository.js	/^var ElasticSearchRepository = function (options) {$/;"	r
+ElasticSearchRepository	tests/syncService.spec.js	/^var ElasticSearchRepository = require('..\/elasticSearchRepository.js');$/;"	r
+GenericRepository	mocks/genericRepositoryMock.js	/^var GenericRepository = function () {$/;"	r
+GenericRepositoryMock	tests/syncInfoRepositoryMock.spec.js	/^var GenericRepositoryMock = require('..\/mocks\/genericRepositoryMock.js');$/;"	r
+GenericRepositoryMock	tests/syncService.spec.js	/^var GenericRepositoryMock = require('..\/mocks\/genericRepositoryMock.js');$/;"	r
+Q	elasticSearchRepository.js	/^var Q = require('q');$/;"	r
+Q	mocks/genericRepositoryMock.js	/^var Q = require('q');$/;"	r
+Q	syncService.js	/^var Q = require('q');$/;"	r
+SyncInfo	syncInfo.js	/^var SyncInfo = function (options) {$/;"	r
+SyncInfo	syncService.js	/^var SyncInfo = require('.\/syncInfo.js')$/;"	r
+SyncService	syncService.js	/^var SyncService = function (options) {$/;"	r
+SyncService	tests/syncService.spec.js	/^var SyncService = require('..\/syncService.js');$/;"	r
+_currentSync	syncService.js	/^                    _currentSync = syncInfo;$/;"	r
+_currentSync	syncService.js	/^        _currentSync        = null;$/;"	r
+_entityRepository	syncService.js	/^        _entityRepository   = options.entityRepository,$/;"	r
+_options	syncInfo.js	/^    var _options = extend({ count: 0, data: null }, options);$/;"	r
+_syncInfoRepository	syncService.js	/^    var _syncInfoRepository = options.syncInfoRepository,$/;"	r
+add	elasticSearchRepository.js	/^    function add (id, entity) {$/;"	r
+add	elasticSearchRepository.js	/^    this.add = add;$/;"	r
+add	mocks/genericRepositoryMock.js	/^    function add (id, entity) {$/;"	r
+add	mocks/genericRepositoryMock.js	/^    this.add = add;$/;"	r
+assert	tests/syncInfoRepositoryMock.spec.js	/^var assert = chai.assert;$/;"	r
+assert	tests/syncService.spec.js	/^var assert = chai.assert;$/;"	r
+author	package.json	/^  "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http:\/\/cburgdorf.wordpress.com\/)",$/;"	f
+chai	package.json	/^    "chai": "~1.9.0"$/;"	f
+chai	tests/syncInfoRepositoryMock.spec.js	/^var chai = require('chai');$/;"	r
+chai	tests/syncService.spec.js	/^var chai = require('chai');$/;"	r
+deferred	mocks/genericRepositoryMock.js	/^        var deferred = Q.defer();$/;"	r
+dependencies	package.json	/^  "dependencies": {$/;"	f
+description	package.json	/^  "description": "The sync API for ninya.io",$/;"	f
+devDependencies	package.json	/^  "devDependencies": {$/;"	f
+elasticsearch	elasticSearchRepository.js	/^var elasticsearch = require('elasticsearch');$/;"	r
+elasticsearch	package.json	/^    "elasticsearch": "~1.5.14"$/;"	f
+elasticsearchEndpoint	elasticSearchRepository.js	/^        options.elasticsearchEndpoint$/;"	r
+entities	mocks/genericRepositoryMock.js	/^    var entities = {};$/;"	r
+entityRepository	tests/syncService.spec.js	/^                entityRepository$/;"	r
+entityRepository	tests/syncService.spec.js	/^        entityRepository = new GenericRepositoryMock();$/;"	r
+entityRepository	tests/syncService.spec.js	/^        entityRepository;$/;"	r
+esClient	elasticSearchRepository.js	/^    var esClient = elasticsearch.Client({$/;"	r
+exports	elasticSearchRepository.js	/^module.exports = ElasticSearchRepository;/;"	r
+exports	lowerReputationComesLaterInterceptor.js	/^module.exports = lowerReputationComesLaterInterceptor;/;"	r
+exports	mocks/genericRepositoryMock.js	/^module.exports = GenericRepository;$/;"	r
+exports	syncInfo.js	/^module.exports = SyncInfo;/;"	r
+exports	syncService.js	/^module.exports = SyncService;$/;"	r
+extend	syncInfo.js	/^var extend = require('util')._extend;$/;"	r
+extend	syncService.js	/^var extend = require('util')._extend;$/;"	r
+getAll	mocks/genericRepositoryMock.js	/^    function getAll () {$/;"	r
+getAll	mocks/genericRepositoryMock.js	/^    this.getAll = getAll;$/;"	r
+getById	elasticSearchRepository.js	/^    function getById (id) {$/;"	r
+getById	elasticSearchRepository.js	/^    this.getById = getById;$/;"	r
+getById	mocks/genericRepositoryMock.js	/^    function getById (id) {$/;"	r
+getById	mocks/genericRepositoryMock.js	/^    this.getById = getById;$/;"	r
+getSyncInfo	syncService.js	/^    function getSyncInfo (syncOptions) {$/;"	r
+increment	syncInfo.js	/^    this.increment = function () {$/;"	r
+lastEntity	syncService.js	/^                    var lastEntity = options.entityUpdateInterceptor$/;"	r
+license	package.json	/^  "license": "MIT",$/;"	f
+lowerReputationComesLaterInterceptor	lowerReputationComesLaterInterceptor.js	/^var lowerReputationComesLaterInterceptor = function (last, current) {$/;"	r
+lowerReputationComesLaterInterceptor	tests/syncService.spec.js	/^var lowerReputationComesLaterInterceptor = require('..\/lowerReputationComesLaterInterceptor.js');$/;"	r
+main	package.json	/^  "main": "index.js",$/;"	f
+mocha	package.json	/^    "mocha": "~1.17.1",$/;"	f
+name	package.json	/^  "name": "ninya-sync-api",$/;"	f
+q	package.json	/^    "q": "~1.0.0",$/;"	f
+raiseErrorOnNextAdd	mocks/genericRepositoryMock.js	/^    this.raiseErrorOnNextAdd = false;$/;"	r
+raiseErrorOnNextAdd	tests/syncService.spec.js	/^            repository.raiseErrorOnNextAdd = true;$/;"	r
+remove	mocks/genericRepositoryMock.js	/^    function remove (id) {$/;"	r
+remove	mocks/genericRepositoryMock.js	/^    this.remove = remove;$/;"	r
+remove	syncService.js	/^    function remove (deleteOptions) {$/;"	r
+repository	tests/syncInfoRepositoryMock.spec.js	/^    var repository = new GenericRepositoryMock();$/;"	r
+repository	tests/syncService.spec.js	/^            var repository = new GenericRepositoryMock();$/;"	r
+scripts	package.json	/^  "scripts": {$/;"	f
+sync	syncService.js	/^    function sync (syncOptions) {$/;"	r
+syncInfo	syncService.js	/^                    syncInfo = new SyncInfo(extend(extend({ }, syncInfo), { data: lastEntity }));$/;"	r
+syncInfoRepository	tests/syncService.spec.js	/^        syncInfoRepository = new GenericRepositoryMock();$/;"	r
+syncInfoRepository	tests/syncService.spec.js	/^        syncInfoRepository,$/;"	r
+syncService	tests/syncService.spec.js	/^            syncService$/;"	r
+syncService	tests/syncService.spec.js	/^            var syncService = new SyncService({$/;"	r
+syncService	tests/syncService.spec.js	/^        syncService = new SyncService({$/;"	r
+syncService	tests/syncService.spec.js	/^    var syncService,$/;"	r
+test	package.json	/^    "test": "echo \\"Error: no test specified\\" && exit 1"$/;"	f
+update	syncService.js	/^    function update (entity) {$/;"	r
+val	mocks/genericRepositoryMock.js	/^            var val = entities[key];$/;"	r
+values	mocks/genericRepositoryMock.js	/^        var values = [];$/;"	r
+version	package.json	/^  "version": "0.1.0",$/;"	f

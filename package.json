@@ -9,7 +9,8 @@
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
   "license": "MIT",
   "dependencies": {
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "elasticsearch": "~1.5.14"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
