@@ -27,7 +27,7 @@ describe('syncService', function () {
     describe('sync', function () {
         it('should return an empty sync object', function (done) {
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
                 assert.isObject(syncInfo, 'returns syncInfo object');
@@ -40,14 +40,14 @@ describe('syncService', function () {
     describe('sync#secondCall', function () {
         it('should return an used sync object', function (done) {
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
                     .updateEntity({ id: 'some-doc' })
                     .then(function(){
-                        return syncService.sync({ index: 'test' });
+                        return syncService.sync({ target: 'test' });
                     });
             })
             .then(function (syncInfo) {
@@ -59,17 +59,17 @@ describe('syncService', function () {
         });
     });
 
-    describe('sync#secondCallWithDifferentIndex', function () {
+    describe('sync#secondCallWithDifferentTarget', function () {
         it('should return an empty sync object', function (done) {
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
                     .updateEntity({ id: 'some-doc' })
                     .then(function(){
-                        return syncService.sync({ index: 'test2' });
+                        return syncService.sync({ target: 'test2' });
                     });
             })
             .then(function (syncInfo) {
@@ -83,7 +83,7 @@ describe('syncService', function () {
         it('should save the user with lower reputation as last user', function (done) {
 
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             // by twisting the order here we simulate `syncService.update` calls in a non
             // sequential order which might happen because of the async nature of the sync
@@ -132,7 +132,7 @@ describe('syncService', function () {
             var doc = { id: 'some-doc' };
 
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
 
@@ -167,7 +167,7 @@ describe('syncService', function () {
             });
 
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
             }, function(){
@@ -180,14 +180,14 @@ describe('syncService', function () {
     describe('delete', function () {
         it('should delete sync', function (done) {
             syncService.sync({
-                index: 'test'
+                target: 'test'
             })
             .then(function (syncInfo) {
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
                     .updateEntity({ id: 'some-doc' })
                     .then(function(){
-                        return syncService.sync({ index: 'test' });
+                        return syncService.sync({ target: 'test' });
                     });
             })
             .then(function (syncInfo) {
@@ -196,11 +196,11 @@ describe('syncService', function () {
                 assert(syncInfo.data.id === 'some-doc', 'carries last object');
 
                 return syncService.remove({
-                    index: 'test'
+                    target: 'test'
                 })
                 .then(function() {
                     return syncService.sync({
-                        index: 'test'
+                        target: 'test'
                     });
                 });
             })
@@ -231,7 +231,7 @@ describe('syncService', function () {
     //
     //         syncService
     //             .sync({
-    //                 index: 'foo'
+    //                 target: 'foo'
     //             })
     //             .then(function(){
     //                 return syncService.updateEntity({ id: 'some-doc-6', reputation: 2600 });

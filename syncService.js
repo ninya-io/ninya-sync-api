@@ -12,9 +12,9 @@ var SyncService = function (options) {
 
     function getSyncInfo (syncOptions) {
         return _syncInfoRepository
-            .getById(syncOptions.index)
+            .getById(syncOptions.target)
             .then(function (syncInfo) {
-                return syncInfo || _syncInfoRepository.add(syncOptions.index, new SyncInfo({ index: syncOptions.index }));
+                return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({ target: syncOptions.target }));
             })
             .then(function (syncInfo) {
                 // this comes as JSON, we need to wrap it with the model class to be usable
@@ -23,6 +23,11 @@ var SyncService = function (options) {
     }
 
     function sync (syncOptions) {
+
+        if (!syncOptions) {
+            throw new Error('syncOptions parameter is mandatory');
+        }
+
         return getSyncInfo(syncOptions)
                 .then(function(syncInfo){
                     _currentSync = syncInfo;
@@ -72,12 +77,12 @@ var SyncService = function (options) {
                     syncInfo = new SyncInfo(extend(extend({ }, syncInfo), { data: lastEntity }));
 
                     _currentSync = syncInfo;
-                    return _syncInfoRepository.add(_currentSync.index, _currentSync);
+                    return _syncInfoRepository.add(_currentSync.target, _currentSync);
                 });
     }
 
     function remove (deleteOptions) {
-        return _syncInfoRepository.remove(deleteOptions.index);
+        return _syncInfoRepository.remove(deleteOptions.target);
     }
 
     return {
