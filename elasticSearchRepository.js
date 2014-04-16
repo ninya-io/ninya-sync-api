@@ -18,6 +18,11 @@ var ElasticSearchRepository = function (options) {
         })
         .then(function(data){
             return data._source;
+        }, function (error) {
+            // if we handle the error here, it causes the promise to still
+            // resolve (with undefined) which is what we want. It seems odd though.
+            // Not sure if that is Promise/A compliant.
+            console.log(error);
         });
     }
 
