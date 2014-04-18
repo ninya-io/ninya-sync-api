@@ -8,6 +8,10 @@ var assert = chai.assert;
 
 describe('syncService', function () {
 
+    var someDoc      = { id: 'some-doc' },
+        someDoc1     = { id: 'some-doc-1' },
+        someDoc2     = { id: 'some-doc-2' };
+
     var syncService,
         syncInfoRepository,
         entityRepository;
@@ -47,7 +51,7 @@ describe('syncService', function () {
                 syncId1 = syncInfo.id;
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
-                    .updateEntity({ id: 'some-doc' })
+                    .updateEntity(someDoc.id,someDoc)
                     .then(function(){
                         return syncService.sync({ target: 'test' });
                     });
@@ -57,7 +61,7 @@ describe('syncService', function () {
                 assert.isTrue(syncId1 === syncInfo.id);
                 assert.isFalse(syncInfo.empty, 'is not empty');
                 assert(syncInfo.count === 1, 'has synced one object');
-                assert(syncInfo.data.id === 'some-doc', 'carries last object');
+                assert(syncInfo.data.id === someDoc.id, 'carries last object');
                 done();
             });
         });
@@ -71,7 +75,7 @@ describe('syncService', function () {
             .then(function (syncInfo) {
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
-                    .updateEntity({ id: 'some-doc' })
+                    .updateEntity(someDoc.id, someDoc)
                     .then(function(){
                         return syncService.sync({ target: 'test2' });
                     });
@@ -92,15 +96,15 @@ describe('syncService', function () {
             // by twisting the order here we simulate `syncService.update` calls in a non
             // sequential order which might happen because of the async nature of the sync
             .then(function (syncInfo) {
-                return syncService.updateEntity({ id: 'some-doc-2', reputation: 3000 });
+                return syncService.updateEntity(someDoc2.id, { id: someDoc2.id, reputation: 3000 });
             })
             .then(function (syncInfo) {
-                return syncService.updateEntity({ id: 'some-doc-1', reputation: 3500 });
+                return syncService.updateEntity(someDoc1.id, { id: someDoc1.id, reputation: 3500 });
             })
             .then(function (syncInfo) {
                 assert.isFalse(syncInfo.empty, 'is not empty');
                 assert(syncInfo.count === 2, 'has synced one object');
-                assert(syncInfo.data.id === 'some-doc-2', 'carries last object');
+                assert(syncInfo.data.id === someDoc2.id, 'carries last object');
 
                 entityRepository
                     .getAll()
@@ -116,7 +120,7 @@ describe('syncService', function () {
         it('should throw an exception', function () {
 
             assert.throw(function(){
-                syncService.updateEntity({ id: 'some-doc-1', reputation: 3500 });
+                syncService.updateEntity(someDoc1.id, { id: someDoc1.id, reputation: 3500 });
             }, 'no sync in progress');
         });
     });
@@ -125,7 +129,7 @@ describe('syncService', function () {
         it('should throw an exception', function () {
 
             assert.throw(function(){
-                syncService.hasEntity({ id: 'some-doc-1' });
+                syncService.hasEntity(someDoc1.id, { id: someDoc1.id });
             }, 'no sync in progress');
         });
     });
@@ -133,23 +137,21 @@ describe('syncService', function () {
     describe('hasEntity', function () {
         it('should return false and true accordingly', function (done) {
 
-            var doc = { id: 'some-doc' };
-
             syncService.sync({
                 target: 'test'
             })
             .then(function (syncInfo) {
 
-                return syncService.hasEntity(doc);
+                return syncService.hasEntity(someDoc.id);
             })
             .then(function (hasEntity) {
 
                 assert.isFalse(hasEntity);
 
                 return syncService
-                    .updateEntity(doc)
+                    .updateEntity(someDoc.id, someDoc)
                     .then(function(){
-                        return syncService.hasEntity(doc);
+                        return syncService.hasEntity(someDoc.id);
                     });
             })
             .then(function (hasEntity){
@@ -189,7 +191,7 @@ describe('syncService', function () {
             .then(function (syncInfo) {
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
-                    .updateEntity({ id: 'some-doc' })
+                    .updateEntity(someDoc.id, someDoc)
                     .then(function(){
                         return syncService.sync({ target: 'test' });
                     });
@@ -197,7 +199,7 @@ describe('syncService', function () {
             .then(function (syncInfo) {
                 assert.isFalse(syncInfo.empty, 'is not empty');
                 assert(syncInfo.count === 1, 'has synced one object');
-                assert(syncInfo.data.id === 'some-doc', 'carries last object');
+                assert(syncInfo.data.id === someDoc.id, 'carries last object');
 
                 return syncService.remove({
                     target: 'test'

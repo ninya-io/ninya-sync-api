@@ -36,7 +36,7 @@ var SyncService = function (options) {
                 })
     }
 
-    function hasEntity (entity) {
+    function hasEntity (id) {
         if (!_currentSync) {
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
@@ -46,13 +46,13 @@ var SyncService = function (options) {
         // We need to know whether it exists *within the current sync* or not!
 
         return _entityRepository
-                    .getByIdAndSyncId(entity.id, _currentSync.id)
+                    .getByIdAndSyncId(id, _currentSync.id)
                     .then(function(entity){
                         return entity !== undefined;
                     });
     }
 
-    function updateEntity (entity) {
+    function updateEntity (id, entity) {
         if (!_currentSync){
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
@@ -60,7 +60,7 @@ var SyncService = function (options) {
         entity._ninya_sync_id = _currentSync.id;
         entity._ninya_sync_last_sync = Date.now();
 
-        return _entityRepository.add(entity.id, entity)
+        return _entityRepository.add(id, entity)
                 // we allways want to get a fresh object from the repository for more safety when using multiple
                 // instances to sync in parallel
                 .then(function(){
