@@ -69,7 +69,7 @@ var ElasticSearchRepository = function (options) {
             }
         }).then(function (resp) {
             var hits = resp.hits.hits;
-            return hits.length > 0 ? hits[0] : null;
+            return hits.length > 0 ? hits[0] : undefined;
         }, function (err) {
             console.log(err);
         });
