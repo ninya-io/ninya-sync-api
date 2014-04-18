@@ -12,6 +12,13 @@ var GenericRepository = function () {
         });
     }
 
+    function getByIdAndSyncId (id, syncId) {
+        return Q.fcall(function(){
+            var entity = entities[id];
+            return entity && entity._ninya_sync_id === syncId ? entity : undefined;
+        });
+    }
+
     function getAll () {
         var values = [];
         Object.keys(entities).forEach(function(key) {
@@ -46,6 +53,7 @@ var GenericRepository = function () {
     }
 
     this.getById = getById;
+    this.getByIdAndSyncId = getByIdAndSyncId;
     this.getAll = getAll;
     this.add = add;
     this.remove = remove;

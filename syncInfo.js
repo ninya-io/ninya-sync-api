@@ -9,7 +9,13 @@ var SyncInfo = function (options) {
     Object.defineProperties(this, {
         target: {
             get : function(){
-                return _options.target; 
+                return _options.target;
+            },
+            enumerable: true
+        },
+        id: {
+            get : function(){
+                return _options.id;
             },
             enumerable: true
         },

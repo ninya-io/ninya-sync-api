@@ -1,6 +1,7 @@
 var Q = require('q');
 var extend = require('util')._extend;
-var SyncInfo = require('./syncInfo.js')
+var SyncInfo = require('./syncInfo.js');
+var uuid = require('node-uuid');
 
 var SyncService = function (options) {
 
@@ -14,7 +15,7 @@ var SyncService = function (options) {
         return _syncInfoRepository
             .getById(syncOptions.target)
             .then(function (syncInfo) {
-                return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({ target: syncOptions.target }));
+                return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({ target: syncOptions.target, id: uuid.v1() }));
             })
             .then(function (syncInfo) {
                 // this comes as JSON, we need to wrap it with the model class to be usable
@@ -40,8 +41,12 @@ var SyncService = function (options) {
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
 
+        // this HAS to be scoped to the syncID because otherwise: where is the point?
+        // This would return true very often but also for very old entities.
+        // We need to know whether it exists *within the current sync* or not!
+
         return _entityRepository
-                    .getById(entity.id)
+                    .getByIdAndSyncId(entity.id, _currentSync.id)
                     .then(function(entity){
                         return entity !== undefined;
                     });
@@ -51,6 +56,9 @@ var SyncService = function (options) {
         if (!_currentSync){
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
+
+        entity._ninya_sync_id = _currentSync.id;
+        entity._ninya_sync_last_sync = Date.now();
 
         return _entityRepository.add(entity.id, entity)
                 // we allways want to get a fresh object from the repository for more safety when using multiple
