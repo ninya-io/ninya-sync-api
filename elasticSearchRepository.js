@@ -54,12 +54,12 @@ var ElasticSearchRepository = function (options) {
                     bool: {
                         must: [
                             {
-                                term: {
+                                match: {
                                     _id: id
                                 }
                             },
                             {
-                                term: {
+                                match: {
                                     _ninya_sync_id: syncId
                                 }
                             }
