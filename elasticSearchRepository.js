@@ -83,7 +83,7 @@ var ElasticSearchRepository = function (options) {
             body: entity
         })
         .then(function(data){
-            return data.ok;
+            return entity;
         })
     }
 
