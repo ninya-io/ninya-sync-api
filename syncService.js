@@ -112,7 +112,12 @@ var SyncService = function (options) {
 
     function remove (deleteOptions) {
         var target = (deleteOptions || _currentSync).target;
-        return _syncInfoRepository.remove(target);
+        return _syncInfoRepository
+                    .remove(target)
+                    .then(function(){
+                        _currentSync = null;
+                        return undefined;
+                    });
     }
 
     return {

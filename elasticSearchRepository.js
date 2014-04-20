@@ -87,10 +87,19 @@ var ElasticSearchRepository = function (options) {
         })
     }
 
+    function remove (id) {
+        return esClient.delete({
+            index: options.index,
+            type: options.type,
+            id: id
+        });
+    }
+
     this.getById = getById;
     this.getByIdAndTaskId = getByIdAndTaskId;
     this.countByTaskId = countByTaskId;
     this.add = add;
+    this.remove = remove;
 };
 
 module.exports = ElasticSearchRepository;
