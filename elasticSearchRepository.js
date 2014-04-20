@@ -27,25 +27,6 @@ var ElasticSearchRepository = function (options) {
     }
 
     function getByIdAndSyncId (id, syncId) {
-        // {
-        //   "query": {
-        //     "bool": {
-        //       "must": [
-        //         {
-        //           "term": {
-        //             "account_id": "1419834"
-        //           }
-        //         },
-        //         {
-        //           "term": {
-        //             "last_modified_date": "1390137591"
-        //           }
-        //         }
-        //       ]
-        //     }
-        //   }
-        // }
-
         return esClient.search({
             index: options.index,
             type: options.type,
