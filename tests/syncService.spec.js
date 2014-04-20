@@ -106,10 +106,10 @@ describe('syncService', function () {
                 assert(syncInfo.count === 2, 'has synced one object');
                 assert(syncInfo.data.id === someDoc2.id, 'carries last object');
 
-                entityRepository
-                    .getAll()
-                    .then(function(items){
-                        assert(items.length === 2, 'has two items');
+                syncService
+                    .count()
+                    .then(function(count) {
+                        assert(count === 2, 'has two items');
                         done();
                     });
             });

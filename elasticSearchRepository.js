@@ -75,6 +75,23 @@ var ElasticSearchRepository = function (options) {
         });
     }
 
+    function countBySyncId (syncId) {
+        return esClient.count({
+            index: options.index,
+            type: options.type,
+            body: {
+                match: {
+                    _ninya_sync_id: syncId
+                }
+            }
+        })
+        .then(function(data) {
+            return data.count;
+        }, function(error){
+            console.log(error);
+        });
+    }
+
 
     function add (id, entity) {
 
@@ -91,6 +108,7 @@ var ElasticSearchRepository = function (options) {
 
     this.getById = getById;
     this.getByIdAndSyncId = getByIdAndSyncId;
+    this.countBySyncId = countBySyncId;
     this.add = add;
 };
 

@@ -37,9 +37,7 @@ var SyncService = function (options) {
     }
 
     function hasEntity (id) {
-        if (!_currentSync) {
-            throw new Error(NO_SYNC_IN_PROGRESS);
-        }
+        validateSyncInProgress();
 
         // this HAS to be scoped to the syncID because otherwise: where is the point?
         // This would return true very often but also for very old entities.
@@ -52,10 +50,20 @@ var SyncService = function (options) {
                     });
     }
 
-    function updateEntity (id, entity) {
-        if (!_currentSync){
+    function count () {
+        validateSyncInProgress();
+
+        return _entityRepository.countBySyncId(_currentSync.id);
+    }
+
+    function validateSyncInProgress () {
+        if (!_currentSync) {
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
+    }
+
+    function updateEntity (id, entity) {
+        validateSyncInProgress();
 
         entity._ninya_sync_id = _currentSync.id;
         entity._ninya_sync_last_sync = Date.now();
@@ -68,6 +76,10 @@ var SyncService = function (options) {
                 })
                 .then(function (syncInfo) {
 
+                    // FIX ME: This doesn't increment the count of entities. It increments
+                    // the count of updates. The number of updates might be higher than the
+                    // number of real synced entities (overwrites!). We can still keep it as it's
+                    // still useful information. But we should rename it.
                     syncInfo.increment();
 
                     // if we have a `entityUpdateInterceptor` we let that decide how to update the
@@ -90,14 +102,16 @@ var SyncService = function (options) {
     }
 
     function remove (deleteOptions) {
-        return _syncInfoRepository.remove(deleteOptions.target);
+        var target = (deleteOptions || _currentSync).target;
+        return _syncInfoRepository.remove(target);
     }
 
     return {
         sync: sync,
         updateEntity: updateEntity,
         remove: remove,
-        hasEntity: hasEntity
+        hasEntity: hasEntity,
+        count: count
     }
 };
 
