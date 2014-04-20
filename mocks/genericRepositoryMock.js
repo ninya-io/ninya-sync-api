@@ -12,19 +12,19 @@ var GenericRepository = function () {
         });
     }
 
-    function getByIdAndSyncId (id, syncId) {
+    function getByIdAndTaskId (id, taskId) {
         return Q.fcall(function(){
             var entity = entities[id];
-            return entity && entity._ninya_sync_id === syncId ? entity : undefined;
+            return entity && entity._ninya_sync_task_id === taskId ? entity : undefined;
         });
     }
 
-    function countBySyncId (syncId) {
+    function countByTaskId (taskId) {
         return Q.fcall(function(){
             return Object
                     .keys(entities)
                     .filter(function(key) {
-                        return entities[key]._ninya_sync_id === syncId;
+                        return entities[key]._ninya_sync_task_id === taskId;
                     })
                     .length;
         });
@@ -64,8 +64,8 @@ var GenericRepository = function () {
     }
 
     this.getById = getById;
-    this.getByIdAndSyncId = getByIdAndSyncId;
-    this.countBySyncId = countBySyncId;
+    this.getByIdAndTaskId = getByIdAndTaskId;
+    this.countByTaskId = countByTaskId;
     this.getAll = getAll;
     this.add = add;
     this.remove = remove;

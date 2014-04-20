@@ -43,12 +43,12 @@ describe('syncService', function () {
 
     describe('sync#secondCall', function () {
         it('should return an used sync object', function (done) {
-            var syncId1;
+            var taskId1;
             syncService.sync({
                 target: 'test'
             })
             .then(function (syncInfo) {
-                syncId1 = syncInfo.id;
+                taskId1 = syncInfo.taskId;
                 assert.isTrue(syncInfo.empty, 'is empty syncInfo object');
                 return syncService
                     .updateEntity(someDoc.id,someDoc)
@@ -57,8 +57,8 @@ describe('syncService', function () {
                     });
             })
             .then(function (syncInfo) {
-                assert.isDefined(syncId1);
-                assert.isTrue(syncId1 === syncInfo.id);
+                assert.isDefined(taskId1);
+                assert.isTrue(taskId1 === syncInfo.taskId);
                 assert.isFalse(syncInfo.empty, 'is not empty');
                 assert(syncInfo.count === 1, 'has synced one object');
                 assert(syncInfo.data.id === someDoc.id, 'carries last object');

@@ -23,7 +23,7 @@ var SyncService = function (options) {
                     // dashes and then one needs to deactivate the anaylizer via a mapping.
                     // That's a bit of an unconvienice especially for testing. We can work around
                     // that if we limit ourself to numbers which we do by using a UNIX timestamp.
-                    id: Date.now()
+                    taskId: Date.now()
                 }));
             })
             .then(function (syncInfo) {
@@ -53,7 +53,7 @@ var SyncService = function (options) {
         // We need to know whether it exists *within the current sync* or not!
 
         return _entityRepository
-                    .getByIdAndSyncId(id, _currentSync.id)
+                    .getByIdAndTaskId(id, _currentSync.taskId)
                     .then(function(entity){
                         return entity !== undefined;
                     });
@@ -62,7 +62,7 @@ var SyncService = function (options) {
     function count () {
         validateSyncInProgress();
 
-        return _entityRepository.countBySyncId(_currentSync.id);
+        return _entityRepository.countByTaskId(_currentSync.taskId);
     }
 
     function validateSyncInProgress () {
@@ -74,7 +74,7 @@ var SyncService = function (options) {
     function updateEntity (id, entity) {
         validateSyncInProgress();
 
-        entity._ninya_sync_id = _currentSync.id;
+        entity._ninya_sync_task_id = _currentSync.taskId;
         entity._ninya_sync_last_sync = Date.now();
 
         return _entityRepository.add(id, entity)

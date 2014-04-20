@@ -13,9 +13,9 @@ var SyncInfo = function (options) {
             },
             enumerable: true
         },
-        id: {
+        taskId: {
             get : function(){
-                return _options.id;
+                return _options.taskId;
             },
             enumerable: true
         },

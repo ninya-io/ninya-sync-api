@@ -26,7 +26,7 @@ var ElasticSearchRepository = function (options) {
         });
     }
 
-    function getByIdAndSyncId (id, syncId) {
+    function getByIdAndTaskId (id, taskId) {
         return esClient.search({
             index: options.index,
             type: options.type,
@@ -41,7 +41,7 @@ var ElasticSearchRepository = function (options) {
                             },
                             {
                                 match: {
-                                    _ninya_sync_id: syncId
+                                    _ninya_sync_task_id: taskId
                                 }
                             }
                         ]
@@ -56,13 +56,13 @@ var ElasticSearchRepository = function (options) {
         });
     }
 
-    function countBySyncId (syncId) {
+    function countByTaskId (taskId) {
         return esClient.count({
             index: options.index,
             type: options.type,
             body: {
                 match: {
-                    _ninya_sync_id: syncId
+                    _ninya_sync_task_id: taskId
                 }
             }
         })
@@ -88,8 +88,8 @@ var ElasticSearchRepository = function (options) {
     }
 
     this.getById = getById;
-    this.getByIdAndSyncId = getByIdAndSyncId;
-    this.countBySyncId = countBySyncId;
+    this.getByIdAndTaskId = getByIdAndTaskId;
+    this.countByTaskId = countByTaskId;
     this.add = add;
 };
 
