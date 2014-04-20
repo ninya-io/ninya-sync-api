@@ -15,7 +15,16 @@ var SyncService = function (options) {
         return _syncInfoRepository
             .getById(syncOptions.target)
             .then(function (syncInfo) {
-                return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({ target: syncOptions.target, id: uuid.v1() }));
+                return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({
+                    target: syncOptions.target,
+                    // we use a UNIX timestamp as id. Strictly speaking it's not unique across
+                    // space and time but it's unique enough for us to work with. The use
+                    // of uuids did not work out so well with elasticsearch because it has
+                    // dashes and then one needs to deactivate the anaylizer via a mapping.
+                    // That's a bit of an unconvienice especially for testing. We can work around
+                    // that if we limit ourself to numbers which we do by using a UNIX timestamp.
+                    id: Date.now()
+                }));
             })
             .then(function (syncInfo) {
                 // this comes as JSON, we need to wrap it with the model class to be usable
