@@ -1,13 +1,8 @@
 var Q = require('q');
-var elasticsearch = require('elasticsearch');
 
 var ElasticSearchRepository = function (options) {
 
-    var esClient = elasticsearch.Client({
-      hosts: [
-        options.elasticsearchEndpoint
-      ]
-    });
+    var esClient = options.client;
 
     function getById (id) {
 

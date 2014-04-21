@@ -29,19 +29,21 @@ var SyncInfo = function (options) {
             get : function(){
                 return _options.count;
             },
+            set: function(count){
+                _options.count = count;
+            },
             enumerable: true
         },
         data: {
             get : function(){
                 return _options.data;
             },
+            set: function(data){
+                _options.data = data;
+            },
             enumerable: true
         }
     });
-
-    this.increment = function () {
-        _options.count++;
-    };
 };
 
 module.exports = SyncInfo;

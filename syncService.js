@@ -7,6 +7,7 @@ var SyncService = function (options) {
 
     var _syncInfoRepository = options.syncInfoRepository,
         _entityRepository   = options.entityRepository,
+        _lastEntityResolver = options.lastEntityResolver,
         _currentSync        = null;
 
     var NO_SYNC_IN_PROGRESS = 'no sync in progress';
@@ -14,6 +15,21 @@ var SyncService = function (options) {
     function getSyncInfo (syncOptions) {
         return _syncInfoRepository
             .getById(syncOptions.target)
+            .then(function(syncInfo){
+                if(syncInfo){
+
+                    // if the sync exists, we want to enrich it with meta data
+                    return Q.all([
+                            getLastEntity(syncInfo),
+                            count(syncInfo)
+                        ])
+                        .then(function(data){
+                            syncInfo.data = data[0];
+                            syncInfo.count = data[1];
+                            return syncInfo;
+                        });
+                }
+            })
             .then(function (syncInfo) {
                 return syncInfo || _syncInfoRepository.add(syncOptions.target, new SyncInfo({
                     target: syncOptions.target,
@@ -59,14 +75,22 @@ var SyncService = function (options) {
                     });
     }
 
-    function count () {
-        validateSyncInProgress();
-
-        return _entityRepository.countByTaskId(_currentSync.taskId);
+    function getLastEntity (syncInfo) {
+        return _lastEntityResolver.get(getTaskId(syncInfo));
     }
 
-    function validateSyncInProgress () {
-        if (!_currentSync) {
+
+    function count (syncInfo) {
+        return _entityRepository.countByTaskId(getTaskId(syncInfo));
+    }
+
+    function getTaskId (syncInfo) {
+        validateSyncInProgress(syncInfo);
+        return (syncInfo || _currentSync).taskId;
+    }
+
+    function validateSyncInProgress (syncInfo) {
+        if (!syncInfo && !_currentSync) {
             throw new Error(NO_SYNC_IN_PROGRESS);
         }
     }
@@ -76,37 +100,10 @@ var SyncService = function (options) {
 
         entity._ninya_sync_task_id = _currentSync.taskId;
         entity._ninya_sync_last_sync = Date.now();
-
         return _entityRepository.add(id, entity)
-                // we allways want to get a fresh object from the repository for more safety when using multiple
-                // instances to sync in parallel
-                .then(function(){
-                    return getSyncInfo(_currentSync);
-                })
-                .then(function (syncInfo) {
-
-                    // FIX ME: This doesn't increment the count of entities. It increments
-                    // the count of updates. The number of updates might be higher than the
-                    // number of real synced entities (overwrites!). We can still keep it as it's
-                    // still useful information. But we should rename it.
-                    syncInfo.increment();
-
-                    // if we have a `entityUpdateInterceptor` we let that decide how to update the
-                    // `data` property. If not, we update it with the new `entity`
-                    var lastEntity = options.entityUpdateInterceptor
-                                        ? options.entityUpdateInterceptor(syncInfo.data, entity)
-                                        : entity;
-
-                    // yeah, this looks weird I know. The reason for that double `extend` is that we don't
-                    // want a public setter for `data` hence we can only set it through constructing a new
-                    // `SyncInfo` (immutability ftw!). But this comes at it's own costs because we need to build
-                    // a new options parameter out of the existing `syncInfo` + the new data property.
-                    // We first need to construct a temporally mutable object (1st extend) and then mutate
-                    // that through another `extend. The resulting `SyncInfo` will of course be immutable again.
-                    syncInfo = new SyncInfo(extend(extend({ }, syncInfo), { data: lastEntity }));
-
-                    _currentSync = syncInfo;
-                    return _syncInfoRepository.add(_currentSync.target, _currentSync);
+                .then(function(entity){
+                    console.log('SyncService: Updated Entity');
+                    return entity;
                 });
     }
 
@@ -123,6 +120,7 @@ var SyncService = function (options) {
     return {
         sync: sync,
         updateEntity: updateEntity,
+        getLastEntity: getLastEntity,
         remove: remove,
         hasEntity: hasEntity,
         count: count

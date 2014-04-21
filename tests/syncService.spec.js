@@ -1,8 +1,8 @@
 var GenericRepositoryMock = require('../mocks/genericRepositoryMock.js');
+var LastEntityResolverMock = require('../mocks/lastEntityResolverMock.js');
 var ElasticSearchRepository = require('../elasticSearchRepository.js');
 
 var SyncService = require('../syncService.js');
-var lowerReputationComesLaterInterceptor = require('../lowerReputationComesLaterInterceptor.js');
 var chai = require('chai');
 var assert = chai.assert;
 
@@ -20,11 +20,12 @@ describe('syncService', function () {
 
         syncInfoRepository = new GenericRepositoryMock();
         entityRepository = new GenericRepositoryMock();
+        var lastEntityResolver = new LastEntityResolverMock(entityRepository);
 
         syncService = new SyncService({
             syncInfoRepository: syncInfoRepository,
             entityRepository: entityRepository,
-            entityUpdateInterceptor: lowerReputationComesLaterInterceptor
+            lastEntityResolver: lastEntityResolver
         });
     });
 
@@ -101,17 +102,14 @@ describe('syncService', function () {
             .then(function (syncInfo) {
                 return syncService.updateEntity(someDoc1.id, { id: someDoc1.id, reputation: 3500 });
             })
+            .then(function(){
+                return syncService.sync({ target: 'test' });
+            })
             .then(function (syncInfo) {
                 assert.isFalse(syncInfo.empty, 'is not empty');
-                assert(syncInfo.count === 2, 'has synced one object');
                 assert(syncInfo.data.id === someDoc2.id, 'carries last object');
-
-                syncService
-                    .count()
-                    .then(function(count) {
-                        assert(count === 2, 'has two items');
-                        done();
-                    });
+                assert(syncInfo.count === 2, 'has synced one object');
+                done();
             });
         });
     });
@@ -168,8 +166,7 @@ describe('syncService', function () {
             repository.raiseErrorOnNextAdd = true;
 
             var syncService = new SyncService({
-                syncInfoRepository: repository,
-                entityUpdateInterceptor: lowerReputationComesLaterInterceptor
+                syncInfoRepository: repository
             });
 
             syncService.sync({
